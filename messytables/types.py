@@ -305,7 +305,12 @@ def type_guess(rows, types=TYPES, strict=False):
         # element in case of a tie
         # See: http://stackoverflow.com/a/6783101/214950
         guesses_tuples = [(t, guess[t]) for t in type_instances if t in guess]
-        _columns.append(max(guesses_tuples, key=lambda t_n: t_n[1])[0])
+
+        # if there were no guesses, default to string
+        if len(guesses_tuples) > 0:
+            _columns.append(max(guesses_tuples, key=lambda t_n: t_n[1])[0])
+        else:
+            _columns.append(StringType())
     return _columns
 
 
